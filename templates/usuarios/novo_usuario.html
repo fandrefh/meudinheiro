@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block titulo %} Criar conta de usuário | {{ block.super }} {% endblock titulo %}
+
+{% block corpo %}
+
+    <div class="container">
+        <div class="row">
+            <h1>Nova Conta</h1>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Salvar</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock corpo %}

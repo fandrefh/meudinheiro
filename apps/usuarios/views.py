@@ -20,8 +20,14 @@ def novo_usuario(request):
             user.set_password(user.password)
             user.save()
             messages.success(request, 'Conta criada com sucesso')
-            return redirect('usuarios:login_usuario')
+            return redirect('usuarios:usuario_login')
     else:
         form = UsuarioForm()
     context['form'] = form
+    return render(request, template_name, context)
+
+
+def usuario_login(request):
+    template_name = 'usuarios/usuario_login.html'
+    context = {}
     return render(request, template_name, context)
