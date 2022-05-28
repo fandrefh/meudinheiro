@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block titulo %} Criar Nova Categoria | {{ block.super }} {% endblock titulo %}
+
+{% block corpo %}
+
+    <div class="container">
+        <div class="row">
+            <h1>Nova Categoria</h1>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="{{ form.nome.id_for_label }}" class="form-label">{{ form.nome.label }}</label>
+                    {% render_field form.nome class='form-control' placeholder='Nome da categoria' %}
+                </div>
+                <div class="mb-3">
+                    <label for="{{ form.descricao.id_for_label }}" class="form-label">{{ form.descricao.label }}</label>
+                    {% render_field form.descricao class='form-control' placeholder='(Opcional)' %}
+                </div>
+                <div class="mb-3">
+                    <label for="{{ form.tipo.id_for_label }}" class="form-label">{{ form.tipo.label }}</label>
+                    {% render_field form.tipo class='form-control' %}
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock corpo %}
