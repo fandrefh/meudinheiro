@@ -10,13 +10,13 @@ from .forms import CategoriaForm, ReceitaForm
 # Create your views here.
 
 
-@login_required(login_url='/usuarios/login')
+@login_required
 def principal(request):
     template_name = 'financas/principal.html'
     context = {}
     return render(request, template_name, context)
 
-
+@login_required
 def nova_categoria(request):
     template_name = 'financas/nova_categoria.html'
     context = {}
@@ -34,6 +34,7 @@ def nova_categoria(request):
     return render(request, template_name, context)
 
 
+@login_required
 def lista_categorias(request):
     template_name = 'financas/lista_categorias.html'
     categorias = Categoria.objects.filter(usuario=request.user) # ORM -> SELECT * FROM categorias WHERE usuario = username
@@ -43,6 +44,7 @@ def lista_categorias(request):
     return render(request, template_name, context)
 
 
+@login_required
 def editar_categoria(request, pk):
     template_name = 'financas/nova_categoria.html'
     context = {}
@@ -65,6 +67,7 @@ def editar_categoria(request, pk):
     return render(request, template_name, context)
 
 
+@login_required
 def apagar_categoria(request, pk):
     try:
         categoria = Categoria.objects.get(pk=pk, usuario=request.user) # ORM -> SELECT * FROM categoria WHERE id = pk
@@ -76,11 +79,12 @@ def apagar_categoria(request, pk):
     return redirect('financas:lista_categorias')
 
 
+@login_required
 def nova_receita(request):
     template_name = 'financas/nova_receita.html'
     context = {}
     if request.method == 'POST':
-        form = ReceitaForm(request.POST)
+        form = ReceitaForm(data=request.POST, user=request.user)
         if form.is_valid():
             receita_form = form.save(commit=False)
             receita_form.usuario = request.user
@@ -88,11 +92,12 @@ def nova_receita(request):
             messages.success(request, 'Receita adicionada com sucesso')
             return redirect('financas:lista_receitas')
     else:
-        form = ReceitaForm()
+        form = ReceitaForm(user=request.user)
     context['form'] = form
     return render(request, template_name, context)
 
 
+@login_required
 def lista_receitas(request):
     template_name = 'financas/lista_receitas.html'
     receitas = Receita.objects.filter(usuario=request.user)
@@ -100,3 +105,36 @@ def lista_receitas(request):
         'receitas': receitas
     }
     return render(request, template_name, context)
+
+
+@login_required
+def editar_receita(request, pk):
+    template_name = 'financas/nova_receita.html'
+    context = {}
+    try:
+        receita = Receita.objects.get(pk=pk, usuario=request.user)
+    except Receita.DoesNotExist:
+        messages.success(request, 'Receita não encontrada ou você não tem permissão pra editar.')
+        return redirect('financas:lista_receitas')
+    if request.method == 'POST':
+        form = ReceitaForm(data=request.POST, instance=receita, user=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Receita atualizada com sucesso.')
+            return redirect('financas:lista_receitas')
+    else:
+        form = ReceitaForm(instance=receita, user=request.user)
+    context['form'] = form
+    return render(request, template_name, context)
+
+
+@login_required
+def apagar_receita(request, pk):
+    try:
+        receita = Receita.objects.get(pk=pk, usuario=request.user)
+        receita.delete()
+    except Receita.DoesNotExist:
+        messages.error(request, 'Receita não encontrada ou você não tem permissão para apagar.')
+        return redirect('financas:lista_receitas')
+    messages.info(request, 'Receita apagada.')
+    return redirect('financas:lista_receitas')
