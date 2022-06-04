@@ -13,5 +13,9 @@ urlpatterns = [
     path('lista-receitas/', views.lista_receitas, name='lista_receitas'),
     path('editar-receita/<int:pk>/', views.editar_receita, name='editar_receita'),
     path('apagar-receita/<int:pk>/', views.apagar_receita, name='apagar_receita'),
+    path('nova-despesa/', views.nova_despesa, name='nova_despesa'),
+    path('lista-despesas/', views.lista_despesas, name='lista_despesas'),
+    path('editar-despesa/<int:pk>/', views.editar_despesa, name='editar_despesa'),
+    path('apagar-despesa/<int:pk>/', views.apagar_despesa, name='apagar_despesa'),
     path('', views.principal, name='principal'),
 ]

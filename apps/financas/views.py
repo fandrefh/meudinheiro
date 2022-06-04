@@ -3,8 +3,8 @@ from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
-from .models import Categoria, Receita
-from .forms import CategoriaForm, ReceitaForm
+from .models import Categoria, Receita, Despesa
+from .forms import CategoriaForm, ReceitaForm, DespesaForm
 
 
 # Create your views here.
@@ -13,7 +13,14 @@ from .forms import CategoriaForm, ReceitaForm
 @login_required
 def principal(request):
     template_name = 'financas/principal.html'
-    context = {}
+    ultimas_receitas = Receita.objects.filter(usuario=request.user).order_by('-id')[:3]
+    ultimas_despesas = Despesa.objects.filter(usuario=request.user).order_by('-id')[:3]
+    ultimas_categorias = Categoria.objects.filter(usuario=request.user).order_by('-id')[:3]
+    context = {
+        'ultimas_receitas': ultimas_receitas,
+        'ultimas_despesas': ultimas_despesas,
+        'ultimas_categorias': ultimas_categorias,
+    }
     return render(request, template_name, context)
 
 @login_required
@@ -48,8 +55,6 @@ def lista_categorias(request):
 def editar_categoria(request, pk):
     template_name = 'financas/nova_categoria.html'
     context = {}
-    # categoria = get_object_or_404(Categoria, id=pk) # ORM -> SELECT * FROM categoria WHERE id = pk
-    # categoria = Categoria.objects.filter(pk=pk, usuario=request.user).first() # ORM -> SELECT * FROM categoria WHERE id = pk
     try:
         categoria = Categoria.objects.get(pk=pk, usuario=request.user) # ORM -> SELECT * FROM categoria WHERE id = pk
     except Categoria.DoesNotExist as e:
@@ -138,3 +143,64 @@ def apagar_receita(request, pk):
         return redirect('financas:lista_receitas')
     messages.info(request, 'Receita apagada.')
     return redirect('financas:lista_receitas')
+
+
+@login_required
+def nova_despesa(request):
+    template_name = 'financas/nova_despesa.html'
+    context = {}
+    if request.method == 'POST':
+        form = DespesaForm(data=request.POST, user=request.user)
+        if form.is_valid():
+            despesa_form = form.save(commit=False)
+            despesa_form.usuario = request.user
+            despesa_form.save()
+            messages.success(request, 'Despesa lançada com sucesso.')
+            return redirect('financas:lista_despesas')
+    else:
+        form = DespesaForm(user=request.user)
+    context['form'] = form
+    return render(request, template_name, context)
+
+
+@login_required
+def lista_despesas(request):
+    template_name = 'financas/lista_despesas.html'
+    despesas = Despesa.objects.filter(usuario=request.user)
+    context = {
+        'despesas': despesas
+    }
+    return render(request, template_name, context)
+
+
+@login_required
+def editar_despesa(request, pk):
+    template_name = 'financas/nova_despesa.html'
+    context = {}
+    try:
+        despesa = Despesa.objects.get(pk=pk, usuario=request.user)
+    except Despesa.DoesNotExist:
+        messages.warning(request, 'Você não tem permissão para editar a despesa informada.')
+        return redirect('financas:lista_despesas')
+    if request.method == 'POST':
+        form = DespesaForm(data=request.POST, instance=despesa, user=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Despesa atualizada com sucesso.')
+            return redirect('financas:lista_despesas')
+    else:
+        form = DespesaForm(instance=despesa, user=request.user)
+    context['form'] = form
+    return render(request, template_name, context)
+
+
+@login_required
+def apagar_despesa(request, pk):
+    try:
+        despesa = Despesa.objects.get(pk=pk, usuario=request.user)
+        despesa.delete()
+        messages.info(request, 'Despesa apagada.')
+    except Despesa.DoesNotExist:
+        messages.error(request, 'Despesa não encontrada ou você não tem permissão para apagar a despesa.')
+        return redirect('financas:lista_despesas')
+    return redirect('financas:lista_despesas')

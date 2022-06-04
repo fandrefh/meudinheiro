@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+    Despesas | {{ block.super }}
+{% endblock titulo %}
+
+{% block corpo %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>Despesas</h1>
+                {% include 'blocos/mensagens.html' %}
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Identificação</th>
+                        <th scope="col">Descrição</th>
+                        <th scope="col">Categoria</th>
+                        <th scope="col">Valor R$</th>
+                        <th scope="col">Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for despesa in despesas %}
+                    <tr>
+                        <th scope="row">{{ despesa.id }}</th>
+                        <td>{{ despesa.identificacao }}</td>
+                        <td>{{ despesa.descricao }}</td>
+                        <td>{{ despesa.categoria }}</td>
+                        <td>{{ despesa.valor }}</td>
+                        <td>
+                            <a href="{% url 'financas:editar_despesa' despesa.id %}" class="btn btn-secondary btn-sm">Editar</a>
+                            <a href="{% url 'financas:apagar_despesa' despesa.id %}" class="btn btn-danger btn-sm">Apagar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <a href="{% url 'financas:nova_despesa' %}" class="btn btn-primary">Nova despesa</a>
+            </div>
+        </div>
+    </div>
+
+{% endblock corpo %}
