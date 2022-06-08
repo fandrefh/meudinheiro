@@ -17,5 +17,6 @@ urlpatterns = [
     path('lista-despesas/', views.lista_despesas, name='lista_despesas'),
     path('editar-despesa/<int:pk>/', views.editar_despesa, name='editar_despesa'),
     path('apagar-despesa/<int:pk>/', views.apagar_despesa, name='apagar_despesa'),
+    path('busca/', views.buscar, name='buscar'),
     path('', views.principal, name='principal'),
 ]

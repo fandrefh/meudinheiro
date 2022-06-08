@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+  Resultado da Busca | {{ block.super }}
+{% endblock titulo %}
+
+{% block corpo %}
+
+  <div class="container">
+    {% include 'blocos/mensagens.html' %}
+    <div class="row">
+      <div class="col">
+        <h1>Resultado da Busca</h1>
+        {% include 'blocos/mensagens.html' %}
+        <h3>Em receitas</h3>
+        <table class="table table-hover">
+          <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Descrição</th>
+            <th scope="col">Categoria</th>
+            <th scope="col">Valor R$</th>
+            <th scope="col">Ações</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for receita in receitas %}
+          <tr>
+            <th scope="row">{{ receita.id }}</th>
+            <td>{{ receita.descricao }}</td>
+            <td>{{ receita.categoria }}</td>
+            <td>{{ receita.valor }}</td>
+            <td>
+              <a href="" class="btn btn-secondary btn-sm">Editar</a>
+              <a href="" class="btn btn-danger btn-sm">Apagar</a>
+            </td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        <h3>Em despesas</h3>
+        <table class="table table-hover">
+          <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Identificação</th>
+            <th scope="col">Descrição</th>
+            <th scope="col">Categoria</th>
+            <th scope="col">Valor R$</th>
+            <th scope="col">Ações</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for despesa in despesas %}
+          <tr>
+            <th scope="row">{{ despesa.id }}</th>
+            <td>{{ despesa.identificacao }}</td>
+            <td>{{ despesa.descricao }}</td>
+            <td>{{ despesa.categoria }}</td>
+            <td>{{ despesa.valor }}</td>
+            <td>
+              <a href="" class="btn btn-secondary btn-sm">Editar</a>
+              <a href="" class="btn btn-danger btn-sm">Apagar</a>
+            </td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        <h3>Em categorias</h3>
+        <table class="table table-hover">
+          <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Ações</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for categoria in ultimas_categorias %}
+          <tr>
+            <th scope="row">{{ categoria.id }}</th>
+            <td>{{ categoria.nome }}</td>
+            <td>{{ categoria.get_tipo_display }}</td>
+            <td>
+              <a href="{% url 'financas:editar_categoria' categoria.id %}" class="btn btn-secondary btn-sm">Editar</a>
+              <a href="{% url 'financas:apagar_categoria' categoria.id %}" class="btn btn-danger btn-sm">Apagar</a>
+            </td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+{% endblock corpo %}

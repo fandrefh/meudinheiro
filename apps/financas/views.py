@@ -1,4 +1,7 @@
+from itertools import chain
+
 from django.contrib import messages
+from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -204,3 +207,18 @@ def apagar_despesa(request, pk):
         messages.error(request, 'Despesa não encontrada ou você não tem permissão para apagar a despesa.')
         return redirect('financas:lista_despesas')
     return redirect('financas:lista_despesas')
+
+
+@login_required
+def buscar(request):
+    template_name = 'financas/busca_resultados.html'
+    context = {}
+    termo = request.GET.get('termo', None)
+    if termo is not None:
+        categorias = Categoria.objects.busca(termo=termo, usuario=request.user)
+        receitas = Receita.objects.busca(termo=termo, usuario=request.user)
+        despesas = Despesa.objects.busca(termo=termo, usuario=request.user)
+        context['categorias'] = categorias
+        context['receitas'] = receitas
+        context['despesas'] = despesas
+    return render(request, template_name, context)
