@@ -222,3 +222,22 @@ def buscar(request):
         context['receitas'] = receitas
         context['despesas'] = despesas
     return render(request, template_name, context)
+
+
+@login_required
+def relatorios(request):
+    template_name = 'financas/relatorios.html'
+    context = {}
+    data_inicial = request.GET.get('data-inicial', None)
+    data_final = request.GET.get('data-final', None)
+    tipo = request.GET.get('tipo', None)
+    if data_final and data_final:
+        if tipo and tipo == 'RC':
+            receitas = Receita.objects.filter(
+                cadastrada_em__gte=data_inicial, cadastrada_em__lte=data_final)
+            context['receitas'] = receitas
+        else:
+            despesas = Despesa.objects.filter(
+                cadastrada_em__gte=data_inicial, cadastrada_em__lte=data_final)
+            context['despesas'] = despesas
+    return render(request, template_name, context)

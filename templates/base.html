@@ -34,7 +34,7 @@
                   <li>
                     <hr class="dropdown-divider">
                   </li>
-                  <li><a class="dropdown-item" href="#">Relatórios</a></li>
+                  <li><a class="dropdown-item" href="{% url 'financas:relatorios' %}">Relatórios</a></li>
                 </ul>
               </li>
               <li class="nav-item">
@@ -46,6 +46,25 @@
               <button class="btn btn-outline-success" type="submit">Buscar</button>
             </form>
           </div>
+          <li class="nav-item dropdown px-5" style="list-style-type: none">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProfile" role="button" data-bs-toggle="dropdown"
+               aria-expanded="false">
+              {{ user.username }}
+              <img
+                      src="https://mdbootstrap.com/img/Photos/Avatars/avatar-5.jpg"
+                      class="rounded-circle z-depth-0"
+                      alt="avatar image"
+                      height="35"
+              />
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownProfile">
+              <li><a class="dropdown-item" href="{% url 'financas:lista_categorias' %}">Perfil</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="{% url 'financas:relatorios' %}">Trocar senha</a></li>
+            </ul>
+          </li>
         {% endif %}
       </div>
     </nav>

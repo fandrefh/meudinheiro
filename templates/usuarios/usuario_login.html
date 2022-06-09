@@ -4,13 +4,12 @@
 {% block titulo %} Login | {{ block.super }} {% endblock titulo %}
 
 {% block corpo %}
-
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-8">
         <h1>Faça login</h1>
         {% include 'blocos/mensagens.html' %}
-        <form method="post">
+        <form method="post" autocomplete="off">
           {% csrf_token %}
           <div class="mb-3">
             <label for="{{ form.usuario.id_for_label }}">{{ form.usuario.label }}</label>
@@ -21,6 +20,7 @@
             {% render_field form.senha class='form-control' placeholder='Sua senha' %}
           </div>
           <button type="submit" class="btn btn-primary">Entrar</button>
+          <a href="{% url 'usuarios:novo_usuario' %}" class="text-decoration-none">Criar conta</a>
         </form>
       </div>
     </div>

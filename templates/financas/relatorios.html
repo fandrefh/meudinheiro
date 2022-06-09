@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+  Relatório de Receitas | {{ block.super }}
+{% endblock %}
+
+{% block corpo %}
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <h1>Relatório</h1>
+        <form action="">
+          <div class="mb-3">
+            <label for="id-data-inicial">Informe a data inicial</label>
+            <input type="date" id="id-data-inicial" class="form-control" name="data-inicial">
+          </div>
+          <div class="mb-3">
+            <label for="id-data-inicial">Informe a data final</label>
+            <input type="date" id="id-data-final" class="form-control" name="data-final">
+          </div>
+          <div class="mb-3">
+            <label for="id-tipo">Informe o tipo de relatório</label>
+            <select id="id-tipo" class="form-control" name="tipo">
+              <option value="RC">Receita</option>
+              <option value="DP">Despesa</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Consultar</button>
+        </form>
+        {% if receitas %}
+          <h3 class="mt-3">Receita(s)</h3>
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Descrição</th>
+              <th scope="col">Valor R$</th>
+              <th scope="col">Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for receita in receitas %}
+            <tr>
+              <th scope="row">{{ receita.id }}</th>
+              <td>{{ receita.descricao }}</td>
+              <td>{{ receita.valor }}</td>
+              <td>
+                <a href="{% url 'financas:editar_receita' receita.id %}" class="btn btn-secondary btn-sm">Editar</a>
+                <a href="{% url 'financas:apagar_receita' receita.id %}" class="btn btn-danger btn-sm">Apagar</a>
+              </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        {% endif %}
+        {% if despesas %}
+          <h3 class="mt-3">Despesa(s)</h3>
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Identificação</th>
+              <th scope="col">Valor R$</th>
+              <th scope="col">Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for despesa in despesas %}
+            <tr>
+              <th scope="row">{{ despesa.id }}</th>
+              <td>{{ despesa.identificacao }}</td>
+              <td>{{ despesa.valor }}</td>
+              <td>
+                <a href="{% url 'financas:editar_despesa' despesa.id %}" class="btn btn-secondary btn-sm">Editar</a>
+                <a href="{% url 'financas:apagar_despesa' despesa.id %}" class="btn btn-danger btn-sm">Apagar</a>
+              </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock corpo %}
