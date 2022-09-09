@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block titulo %}
+    Movimentação | {{ block.super }}
+{% endblock titulo %}
+
+{% block corpo %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>Movimentação</h1>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="{{ form.descricao.id_for_label }}" class="form-label">{{ form.descricao.label }}</label>
+                        {% render_field form.descricao class='form-control' autofocus='autofocus' %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.discriminacao.id_for_label }}" class="form-label">{{ form.discriminacao.label }}</label>
+                        {% render_field form.discriminacao class='form-control' %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.valor.id_for_label }}" class="form-label">{{ form.valor.label }}</label>
+                        {% render_field form.valor class='form-control' %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.categoria.id_for_label }}" class="form-label">{{ form.categoria.label }}</label>
+                        {% render_field form.categoria class='form-control' %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.anexo.id_for_label }}" class="form-label">{{ form.anexo.label }}</label>
+                        {% render_field form.anexo class='form-control' %}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                    <a class="btn btn-outline-secondary" href="{% url 'movimentacoes:lista_movimentacoes' %}">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock corpo %}

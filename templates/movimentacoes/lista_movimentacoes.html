@@ -27,12 +27,12 @@
                                 <td>{{ movimentacao.discriminacao }}</td>
                                 <td>{{ movimentacao.valor }}</td>
                                 <td>{{ movimentacao.data_criacao }}</td>
-                                <td>{{ movimentacao.get_tipo_display }}</td>
+                                <td>{{ movimentacao.categoria }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
-                <a class="btn btn-outline-primary" href="">Nova Movimentação</a>
+                <a class="btn btn-outline-primary" href="{% url 'movimentacoes:nova_movimentacao' %}">Nova Movimentação</a>
             </div>
         </div>
     </div>

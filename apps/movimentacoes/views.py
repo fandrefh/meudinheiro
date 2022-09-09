@@ -17,7 +17,7 @@ def lista_movimentacoes(request):
 
 
 def nova_movimentacao(request):
-    template_name = 'movimentacoes/nova_movimentacoes.html'
+    template_name = 'movimentacoes/nova_movimentacao.html'
     context = {}
     if request.method == 'POST':
         form = MovimentacaoForm(request.POST)
