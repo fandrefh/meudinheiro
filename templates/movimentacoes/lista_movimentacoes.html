@@ -17,6 +17,7 @@
                             <th scope="col">Valor R$</th>
                             <th scope="col">Data</th>
                             <th scope="col">Tipo</th>
+                            <th scope="col">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -28,6 +29,7 @@
                                 <td>{{ movimentacao.valor }}</td>
                                 <td>{{ movimentacao.data_criacao }}</td>
                                 <td>{{ movimentacao.categoria }}</td>
+                                <td><a href="{% url 'movimentacoes:editar_movimentacao' movimentacao.id %}" class="btn btn-info btn-sm">Editar</a> | <a href="{% url 'movimentacoes:apagar_movimentacao' movimentacao.id %}" class="btn btn-danger btn-sm">Apagar</a> </td>
                             </tr>
                         {% endfor %}
                     </tbody>
