@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Identifique-se | Meu Dinheiro</title>
+    <title>Criar Nova Conta | Meu Dinheiro</title>
     <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
     <style>
       .bd-placeholder-img {
@@ -70,17 +70,29 @@
 <main class="form-signin w-100 m-auto">
     <form method="post">
         {% csrf_token %}
-        <h1 class="h3 mb-3 fw-normal">Por favor, faça login</h1>
+        <h1 class="h3 mb-3 fw-normal">Criar Nova Conta</h1>
         <div class="form-floating">
-            {% render_field form.username class="form-control" placeholder="Digite seu nome de usuário" %}
-            <label for="{{ form.username.id_for_label }}">Usuário</label>
+            {% render_field form.first_name class="form-control" placeholder="Digite seu nome" %}
+            <label for="{{ form.first_name.id_for_label }}">Nome</label>
         </div>
         <div class="form-floating">
-            {% render_field form.password class="form-control" placeholder="Digite sua senha" %}
+            {% render_field form.last_name class="form-control" placeholder="Digite seu sobrenome" %}
+            <label for="{{ form.last_name.id_for_label }}">Sobrenome</label>
+        </div>
+        <div class="form-floating">
+            {% render_field form.email class="form-control" placeholder="Digite seu email" %}
+            <label for="{{ form.email.id_for_label }}">E-mail</label>
+        </div>
+        <div class="form-floating">
+            {% render_field form.username class="form-control" placeholder="Crie um nome de usuário" %}
+            <label for="{{ form.username.id_for_label }}">Nome de usuário (Login)</label>
+        </div>
+        <div class="form-floating">
+            {% render_field form.password type="password" class="form-control" placeholder="Crie uma senha forte" %}
             <label for="{{ form.password.id_for_label }}">Senha</label>
         </div>
-        <button class="w-100 btn btn-lg btn-primary" type="submit">Entrar</button>
-        <a href="{% url 'geral:novo_usuario' %}" class="w-100 btn btn-lg btn-outline-success mt-3">Criar conta</a>
+        <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">Salvar</button>
+        <a href="{% url 'geral:login_usuario' %}" class="w-100 btn btn-lg btn-outline-secondary mt-3">Cancelar</a>
         <p class="mt-5 mb-3 text-muted">&copy; 2022-{% now 'Y' %}</p>
     </form>
 </main>

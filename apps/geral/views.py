@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-from .forms import CategoriaForm, LoginForm
+from .forms import CategoriaForm, LoginForm, UserForm
 from .models import Categoria
 
 # Create your views here.
@@ -40,6 +40,28 @@ def login_usuario(request):
 def logout_usuario(request):
     logout(request)
     return redirect('geral:login_usuario')
+
+
+def novo_usuario(request):
+    template_name = 'geral/novo_usuario.html'
+    context = {}
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            f = form.save(commit=False)
+            f.set_password(f.password) # 123 -> %$#*9)&
+            f.save()
+            messages.success(request, 'Usuário criado com sucesso')
+            return redirect('geral:login_usuario')
+        else:
+            messages.error(request, 'Corrija os erros do seu formulário')
+            form = UserForm(request.POST)
+            context['form'] = form
+            return render(request, template_name, context)
+    else:
+        form = UserForm()
+    context['form'] = form
+    return render(request, template_name, context)
 
 
 @login_required
