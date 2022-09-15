@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block titulo %}
+    Relatório | {{ block.super }}
+{% endblock titulo %}
+
+{% block corpo %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>Relatório</h1>
+                <form method="get">
+                    <div class="mb-3">
+                        <label for="data-inicial" class="form-label">Data Inicial</label>
+                        <input type="date" class="form-control" id="data-inicial" name="data-inicial">
+                    </div>
+                    <div class="mb-3">
+                        <label for="data-final" class="form-label">Data Final</label>
+                        <input type="date" class="form-control" id="data-final" name="data-final">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                    <a class="btn btn-outline-secondary" href="{% url 'geral:principal' %}">Cancelar</a>
+                </form>
+                {% if movimentacoes %}
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Descrição</th>
+                            <th scope="col">Valor R$</th>
+                            <th scope="col">Tipo</th>
+                            <th scope="col">Data</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% for movimentacao in movimentacoes %}
+                                <tr>
+                                    <th scope="row">{{ movimentacao.id }}</th>
+                                    <td>{{ movimentacao.descricao }}</td>
+                                    <td>{{ movimentacao.valor }}</td>
+                                    <td>{{ movimentacao.categoria.get_tipo_display }}</td>
+                                    <td>{{ movimentacao.data_criacao }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock corpo %}
